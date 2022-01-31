@@ -1,11 +1,11 @@
-from numpy import array as vector
+from numpy import array as vector #X = vector()[0] Y = vector()[1]
 from Node import Node
 from Heap import Heap
 
 #Variables
 maxX, maxY = 10, 10 #Size of grid
-startNodePos = vector([1,1])
-targetNodePos = vector([8,9])
+startNodePos = vector([1,1]) 
+targetNodePos = vector([5,1])
 
 #Construct Nodes
 Nodes = [] #maxX x maxY matrix
@@ -32,17 +32,39 @@ targetNode.Traversable = True
 current = startNode
 open.Append(startNode)
 
-while not (current == targetNode):
+#Loop
+while True:
     current = open.arr[0]
-    open.Remove(current)
-    closed.append(current)
 
-    #Loop neighbors
-    for NeighborPos in current.Neighbors:
-        Neighbor = Nodes[NeighborPos[0]][NeighborPos[1]]
-
-        
-
+    if current == targetNode:
         break
 
-    break
+    open.Remove()
+    closed.append(current)
+
+    
+    #Loop neighbors
+    for neighborPos in current.Neighbors:
+        neighbor = Nodes[neighborPos[0]][neighborPos[1]]
+
+        if neighbor.Traversable and not (neighbor in closed):
+
+            #Calculate GCost of alternative path
+            neighborClone = neighbor.Clone()
+            neighborClone.Parent = current
+            newDistance = neighborClone.CalcG() 
+
+            #If alternative path (newDistance) is shorter, or neighbor is not in open
+            inOpen = neighbor in open.arr
+            if newDistance < neighbor.GCost or not inOpen:
+                #Update FCost, then add to Heap
+                neighbor.GCost = newDistance
+                neighbor.HCost = neighbor.CalcH(targetNode)
+                neighbor.FCost = newDistance + neighbor.HCost
+                neighbor.Parent = current
+
+                if not inOpen:
+                    open.Append(neighbor)
+
+path = current.Trace() 
+print(path)

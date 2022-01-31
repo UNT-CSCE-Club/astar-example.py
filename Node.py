@@ -23,12 +23,14 @@ class Node:
         self.P = None #Parent in heap
         self.L = None #Left child
         self.R = None #Right child
+    def __repr__(self):
+        return f"Node({self.Position})"
     
     def Clone(self):
         #Clone node
         return copy.copy(self)
     
-    def CalcG(self, GCost):
+    def CalcG(self, GCost = 0):
         ParentVector = not (self.Parent is None) and self.Parent.Position
         
         if not (self.Parent is None):
@@ -53,3 +55,10 @@ class Node:
                 if not (self.Position[0] == x and self.Position[1] == y) and x >= 0 and x <= maxX and y >= 0 and y <= maxY:
                     Neighbors.append(vector([x, y]))
         return Neighbors
+    
+    def Trace(self, path = []):
+        path.append(self.Position)
+        if not (self.Parent is None):
+            self.Parent.Trace(path)
+        
+        return path
