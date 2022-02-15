@@ -1,3 +1,4 @@
+#1
 import copy
 import math
 from numpy import array as vector
@@ -8,7 +9,7 @@ def Magnitude(x):
 class Node:
     #A node reprsenting any traversable (or non traversable) square
     def __init__(self, Position):
-        self.Position = Position
+        self.Position = Position #of type vector from numpy
         self.Traversable = True
         self.GCost = math.inf
         self.HCost = math.inf
@@ -30,9 +31,12 @@ class Node:
         #Clone node
         return copy.copy(self)
     
+    #3
+    #Calculate G Cost
     def CalcG(self, GCost = 0):
+        #If the node has a parent, assign the parent's position to ParentVector
         ParentVector = not (self.Parent is None) and self.Parent.Position
-        
+
         if not (self.Parent is None):
             #Distance from current node to its Parent node
             GCost += Magnitude(self.Position-ParentVector)

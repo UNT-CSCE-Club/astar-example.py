@@ -1,3 +1,4 @@
+#2
 from numpy import array as vector #X = vector()[0] Y = vector()[1]
 from Node import Node
 from Heap import Heap
@@ -8,14 +9,17 @@ startNodePos = vector([1,1])
 targetNodePos = vector([5,1])
 
 #Construct Nodes
-Nodes = [] #maxX x maxY matrix
+Nodes = [] #maxX maxY 2D matrix
 
 for i in range(maxX):
     NodeColumn = []
     Nodes.insert(i, NodeColumn)
     for j in range(maxY):
         newNode = Node(vector([i, j]))
+
+        #Get neighbors before running the algorithm
         newNode.Neighbors = newNode.GetNeighbors(maxX, maxY)
+        
         NodeColumn.insert(j, newNode)
         
 #Initiation
@@ -34,15 +38,14 @@ open.Append(startNode)
 
 #Loop
 while True:
-    current = open.arr[0]
+    current = open.arr[0] #The first node at the start of the heap is the best next node
 
     if current == targetNode:
         break
 
-    open.Remove()
+    open.Remove() #Removes the node at the start of the heap
     closed.append(current)
 
-    
     #Loop neighbors
     for neighborPos in current.Neighbors:
         neighbor = Nodes[neighborPos[0]][neighborPos[1]]
